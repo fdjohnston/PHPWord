@@ -54,6 +54,10 @@ class Chart extends AbstractPart
         'radar'                  => array('type' => 'radar', 'colors' => 0, 'axes' => true, 'radar' => 'standard', 'no3d' => true),
         'scatter'                => array('type' => 'scatter', 'colors' => 0, 'axes' => true, 'scatter' => 'marker', 'no3d' => true),
     );
+	
+	private $markedTypes = array(
+		'line', 'scatter'
+	);
 
     /**
      * Chart options
@@ -255,6 +259,7 @@ class Chart extends AbstractPart
      */
     private function writeSeries(XMLWriter $xmlWriter, $scatter = false)
     {
+		$type = $this->element->getType();
         $series = $this->element->getSeries();
         $style = $this->element->getStyle();
         $colors = $style->getColors();
@@ -274,9 +279,12 @@ class Chart extends AbstractPart
             $xmlWriter->writeElementBlock('c:idx', 'val', $index);
             $xmlWriter->writeElementBlock('c:order', 'val', $index);
 	
-			$xmlWriter->startElement('c:marker');
-			$xmlWriter->writeElementBlock('c:symbol', 'val', 'none');
-			$xmlWriter->endElement(); // c:marker
+			//Only output markers if this is marked type
+			if (in_array($type, $this->markedTypes)) {
+				$xmlWriter->startElement('c:marker');
+				$xmlWriter->writeElementBlock('c:symbol', 'val', $seriesStyle->getMarker());
+				$xmlWriter->endElement(); // c:marker
+			}
 	
 			//Output trendline
 			if ($trendLine !== null){
