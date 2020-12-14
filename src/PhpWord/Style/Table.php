@@ -607,28 +607,6 @@ class Table extends Border
     {
         return $this->setAlignment($value);
     }
-	
-	/**
-	 * Get indent
-	 *
-	 * @return int|float
-	 */
-	public function getIndent() {
-		return $this->indent;
-	}
-	
-	/**
-	 * Set indent
-	 *
-	 * @param int|float $value
-	 *
-	 * @return self
-	 */
-	public function setIndent($value = null) {
-		$this->indent = $this->setNumericVal($value, $this->indent);
-		
-		return $this;
-	}
 
     /**
      * Get width
@@ -765,26 +743,30 @@ class Table extends Border
 
         return $this;
     }
-
-    /**
-     * @return TblWidthComplexType
-     */
-    public function getIndent()
-    {
-        return $this->indent;
-    }
-
-    /**
-     * @param TblWidthComplexType $indent
-     * @return self
-     * @see http://www.datypic.com/sc/ooxml/e-w_tblInd-1.html
-     */
-    public function setIndent(TblWidthComplexType $indent)
-    {
-        $this->indent = $indent;
-
-        return $this;
-    }
+	
+	/**
+	 * Get indent
+	 *
+	 * @return int|float
+	 */
+	public function getIndent()
+	{
+		return $this->indent;
+	}
+	
+	/**
+	 * Set indent
+	 *
+	 * @param int|float $value
+	 *
+	 * @return self
+	 */
+	public function setIndent($value = null)
+	{
+		$this->indent = $this->setNumericVal($value, $this->indent);
+		
+		return $this;
+	}
 
     /**
      * Get the columnWidths
