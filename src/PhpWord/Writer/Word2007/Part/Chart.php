@@ -318,7 +318,7 @@ class Chart extends AbstractPart
 				$xmlWriter->endElement(); // c:trendline
 			}
 
-            if (!is_null($seriesItem['name']) && $seriesItem['name'] != '') {
+            if (isset($seriesItem->name) && !is_null($seriesItem->name) && $seriesItem->name != '') {
                 $xmlWriter->startElement('c:tx');
                 $xmlWriter->startElement('c:strRef');
                 $xmlWriter->startElement('c:strCache');
@@ -326,7 +326,7 @@ class Chart extends AbstractPart
                 $xmlWriter->startElement('c:pt');
                 $xmlWriter->writeAttribute('idx', 0);
                 $xmlWriter->startElement('c:v');
-                $xmlWriter->writeRaw($seriesItem['name']);
+                $xmlWriter->writeRaw($seriesItem->name);
                 $xmlWriter->endElement(); // c:v
                 $xmlWriter->endElement(); // c:pt
                 $xmlWriter->endElement(); // c:strCache
