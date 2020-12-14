@@ -293,6 +293,11 @@ class Section extends Border
     {
         return $this->pageSizeW;
     }
+	
+	public function getContentSizeW()
+	{
+		return $this->pageSizeW - $this->marginLeft - $this->marginRight;
+	}
 
     /**
      * @param int|float|null $value
