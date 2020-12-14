@@ -410,6 +410,7 @@ class Chart extends AbstractPart
      */
     private function writeAxis(XMLWriter $xmlWriter, $type)
     {
+		$chartType = $this->element->getType();
         $style = $this->element->getStyle();
         $types = array(
             'cat' => array('c:catAx', 1, 'b', 2),
@@ -457,6 +458,21 @@ class Chart extends AbstractPart
             } else {
                 $xmlWriter->writeElementBlock('c:tickLblPos', 'val', 'none');
             }
+	
+			//TODO:  Fix this!
+			if (in_array($chartType, array('bar', 'column'))){
+				$xmlWriter->startElement('c:txPr');
+				$xmlWriter->writeElementBlock('a:bodyPr', array('rot'=>'-5400000', 'vert'=>'horz'));
+				$xmlWriter->writeElement('a:lstStyle');
+		
+				$xmlWriter->startElement('a:p');
+				$xmlWriter->startElement('a:pPr');
+				$xmlWriter->writeElement('a:defRPr');
+				$xmlWriter->endElement(); // a:pPr
+				$xmlWriter->endElement(); // a:p
+		
+				$xmlWriter->endElement(); // c:txPr
+			}
 	
 			if ($style->showAxisTitles() && trim($axesTitles[$type]) !== '') {
 		
