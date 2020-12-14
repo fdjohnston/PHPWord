@@ -186,6 +186,9 @@ class Chart extends AbstractStyle
      */
     private $gridX = false;
 	
+	private $majorUnitX;
+	private $majorUnitY = 'auto';
+	
 	/**
 	 * How to display gaps in the graph
 	 *
@@ -565,6 +568,28 @@ class Chart extends AbstractStyle
 
         return $this;
     }
+	
+	/**
+	 * Set the major unit for Y-Axis
+	 *
+	 * @return string
+	 */
+	public function majorUnitY() {
+		return $this->majorUnitY;
+	}
+	
+	/**
+	 * Set major unit for Y-Axis
+	 *
+	 * @param string $value
+	 *
+	 * @return self
+	 */
+	public function setMajorUnitY($value = 'auto') {
+		$this->majorUnitY = $value;
+		
+		return $this;
+	}
 	
 	/**
 	 * Get display blanks as

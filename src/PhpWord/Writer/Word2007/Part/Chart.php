@@ -511,6 +511,10 @@ class Chart extends AbstractPart
 			}
             
             $xmlWriter->writeElementBlock('c:crosses', 'val', 'autoZero');
+	
+			if ($type == 'val' && $style->majorUnitY() !== 'auto'){
+				$xmlWriter->writeElementBlock('c:majorUnit', 'val', $style->majorUnitY());
+			}
         }
         if (isset($this->options['radar']) || ($type == 'cat' && $style->showGridX()) || ($type == 'val' && $style->showGridY())) {
             $xmlWriter->writeElement('c:majorGridlines');
