@@ -17,7 +17,9 @@
 
 namespace PhpOffice\PhpWord\Element;
 
+use PhpOffice\PhpWord\Style;
 use PhpOffice\PhpWord\Style\Chart as ChartStyle;
+use PhpOffice\PhpWord\Element\Series;
 
 /**
  * Chart element
@@ -43,7 +45,7 @@ class Chart extends AbstractElement
     /**
      * Series
      *
-     * @var array
+     * @var \PhpOffice\PhpWord\Element\Series[]
      */
     private $series = array();
 
@@ -53,6 +55,10 @@ class Chart extends AbstractElement
      * @var \PhpOffice\PhpWord\Style\Chart
      */
     private $style;
+	
+	private $categoryAxisLabel = '';
+	private $valueAxisLabel = '';
+	private $title = '';
 
     /**
      * Create new instance
@@ -66,7 +72,7 @@ class Chart extends AbstractElement
     public function __construct($type, $categories, $values, $style = null, $seriesName = null)
     {
         $this->setType($type);
-        $this->addSeries($categories, $values, $seriesName);
+        //$this->addSeries($categories, $values, $seriesName);
         $this->style = $this->setNewStyle(new ChartStyle(), $style, true);
     }
 
@@ -98,13 +104,9 @@ class Chart extends AbstractElement
      * @param array $values
      * @param null|mixed $name
      */
-    public function addSeries($categories, $values, $name = null)
+    public function addSeries($categories, $values, $trendLine = null, $style = null)
     {
-        $this->series[] = array(
-            'categories' => $categories,
-            'values'     => $values,
-            'name'       => $name,
-        );
+		$this->series[] = new Series($categories, $values, $trendLine, $style);
     }
 
     /**
@@ -126,4 +128,67 @@ class Chart extends AbstractElement
     {
         return $this->style;
     }
+	
+	/**
+	 * Get category axis label
+	 *
+	 * @return string
+	 */
+	public function getCategoryAxisLabel()
+	{
+		return $this->categoryAxisLabel;
+	}
+	
+	/**
+	 * Set category axis label.
+	 *
+	 * @param string $value
+	 * @return void
+	 */
+	public function setCategoryAxisLabel($value)
+	{
+		$this->categoryAxisLabel = $value;
+	}
+	
+	/**
+	 * Get value axis label
+	 *
+	 * @return string
+	 */
+	public function getValueAxisLabel()
+	{
+		return $this->valueAxisLabel;
+	}
+	
+	/**
+	 * Set value axis label.
+	 *
+	 * @param string $value
+	 * @return void
+	 */
+	public function setValueAxisLabel($value)
+	{
+		$this->valueAxisLabel = $value;
+	}
+	
+	/**
+	 * Get value title
+	 *
+	 * @return string
+	 */
+	public function getTitle()
+	{
+		return $this->title;
+	}
+	
+	/**
+	 * Set value title.
+	 *
+	 * @param string $value
+	 * @return void
+	 */
+	public function setTitle($value)
+	{
+		$this->title = $value;
+	}
 }

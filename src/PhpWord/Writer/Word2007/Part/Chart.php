@@ -103,11 +103,50 @@ class Chart extends AbstractPart
      */
     private function writeChart(XMLWriter $xmlWriter)
     {
+		$style = $this->element->getStyle();
+    	
         $xmlWriter->startElement('c:chart');
+	
+		if ($style->showTitle()) {
+			$xmlWriter->startElement('c:title');
+			$xmlWriter->startElement('c:tx');
+			$xmlWriter->startElement('c:rich');
+		
+			$xmlWriter->writeElement('a:bodyPr');
+			$xmlWriter->writeElement('a:lstStyle');
+		
+			$xmlWriter->startElement('a:p');
+			$xmlWriter->startElement('a:pPr');
+			$xmlWriter->writeElement('a:defRPr');
+			$xmlWriter->endElement(); // a:pPr
+		
+			$xmlWriter->startElement('a:r');
+			$xmlWriter->writeElement('a:t', $this->element->getTitle());
+			$xmlWriter->endElement(); // a:r
+		
+		
+			$xmlWriter->endElement(); // a:p
+		
+			$xmlWriter->endElement(); // c:rich
+			$xmlWriter->endElement(); // c:tx
+			$xmlWriter->writeElementBlock('c:overlay', 'val', "0");
+			$xmlWriter->endElement(); // c:title
+		}
+		else {
+			$xmlWriter->writeElementBlock('c:autoTitleDeleted', 'val', 1);
+		}
 
         $this->writePlotArea($xmlWriter);
 	
-		$xmlWriter->writeElementBlock('c:dispBlanksAs', 'val', 'gap');
+		//Legend
+		if ($style->showLegend()){
+			$xmlWriter->startElement('c:legend');
+			$xmlWriter->writeElementBlock('c:legendPos', 'val', $style->getLegendPos());
+			$xmlWriter->writeElementBlock('c:overlay', 'val', $style->getLegendOverlayforXML());
+			$xmlWriter->endElement(); // c:legend
+		}
+	
+		$xmlWriter->writeElementBlock('c:dispBlanksAs', 'val', $style->getDisplayBlanksAs());
 
         $xmlWriter->endElement(); // c:chart
     }
@@ -219,11 +258,16 @@ class Chart extends AbstractPart
         $series = $this->element->getSeries();
         $style = $this->element->getStyle();
         $colors = $style->getColors();
-
+        
         $index = 0;
         foreach ($series as $seriesItem) {
-            $categories = $seriesItem['categories'];
-            $values = $seriesItem['values'];
+			//Fetch series styles
+			$seriesStyle = $seriesItem->getStyle();
+			$trendLine = $seriesItem->getTrendLine();
+	
+			//Fetch categories and values
+			$categories = $seriesItem->getCategories();
+			$values = $seriesItem->getValues();
 
             $xmlWriter->startElement('c:ser');
 
@@ -233,6 +277,15 @@ class Chart extends AbstractPart
 			$xmlWriter->startElement('c:marker');
 			$xmlWriter->writeElementBlock('c:symbol', 'val', 'none');
 			$xmlWriter->endElement(); // c:marker
+	
+			//Output trendline
+			if ($trendLine !== null){
+				$xmlWriter->startElement('c:trendline');
+				$xmlWriter->writeElementBlock('c:trendlineType', 'val', $trendLine->getType());
+				$xmlWriter->writeElementBlock('c:dispRSqr', 'val', $trendLine->displayRSqr() ? '1' : '0');
+				$xmlWriter->writeElementBlock('c:dispEq', 'val', $trendLine->displayEq() ? '1' : '0');
+				$xmlWriter->endElement(); // c:trendline
+			}
 
             if (!is_null($seriesItem['name']) && $seriesItem['name'] != '') {
                 $xmlWriter->startElement('c:tx');
@@ -355,6 +408,12 @@ class Chart extends AbstractPart
             'val' => array('c:valAx', 2, 'l', 1),
         );
         list($axisType, $axisId, $axisPos, $axisCross) = $types[$type];
+	
+		//Grab axis titles
+		$axesTitles=array(
+			'cat'	=> $this->element->getCategoryAxisLabel(),
+			'val'	=> $this->element->getValueAxisLabel()
+		);
 
         $xmlWriter->startElement($axisType);
 
@@ -390,6 +449,34 @@ class Chart extends AbstractPart
             } else {
                 $xmlWriter->writeElementBlock('c:tickLblPos', 'val', 'none');
             }
+	
+			if ($style->showAxisTitles() && trim($axesTitles[$type]) !== '') {
+		
+				$xmlWriter->startElement('c:title');
+				$xmlWriter->startElement('c:tx');
+				$xmlWriter->startElement('c:rich');
+		
+				$xmlWriter->writeElement('a:bodyPr');
+				$xmlWriter->writeElement('a:lstStyle');
+		
+				$xmlWriter->startElement('a:p');
+				$xmlWriter->startElement('a:pPr');
+				$xmlWriter->writeElement('a:defRPr');
+				$xmlWriter->endElement(); // a:pPr
+		
+				$xmlWriter->startElement('a:r');
+				$xmlWriter->writeElement('a:t', $axesTitles[$type]);
+				$xmlWriter->endElement(); // a:r
+		
+		
+				$xmlWriter->endElement(); // a:p
+		
+				$xmlWriter->endElement(); // c:rich
+				$xmlWriter->endElement(); // c:tx
+				$xmlWriter->writeElementBlock('c:overlay', 'val', "0");
+				$xmlWriter->endElement(); // c:title
+			}
+            
             $xmlWriter->writeElementBlock('c:crosses', 'val', 'autoZero');
         }
         if (isset($this->options['radar']) || ($type == 'cat' && $style->showGridX()) || ($type == 'val' && $style->showGridY())) {

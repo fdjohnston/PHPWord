@@ -37,6 +37,11 @@ class Chart extends AbstractStyle
 	const DISP_BLANK_AS_ZERO	= 'zero';
 	const DISP_BLANK_AS_GAP		= 'gap';
 	
+	const LEGEND_POS_RIGHT		= 'r';
+	const LEGEND_POS_LEFT		= 'l';
+	const LEGEND_POS_TOP		= 't';
+	const LEGEND_POS_BOTTOM		= 'b';
+	
     /**
      * Width (in EMU)
      *
@@ -138,6 +143,34 @@ class Chart extends AbstractStyle
      * @var bool
      */
     private $showAxisLabels = false;
+	
+	/**
+	 * Show titles for axis
+	 *
+	 * @var bool
+	 */
+	private $showAxisTitles = false;
+	
+	/**
+	 * Show title
+	 *
+	 * @var bool
+	 */
+	private $showTitle = false;
+	
+	/**
+	 * Legend position
+	 *
+	 * @var string
+	 */
+	private $legendPos = self::LEGEND_POS_RIGHT;
+	
+	/**
+	 * Legend overlay
+	 *
+	 * @var bool
+	 */
+	private $legendOverlay = false;
 
     /**
      * Show Gridlines for Y-Axis
@@ -152,6 +185,13 @@ class Chart extends AbstractStyle
      * @var bool
      */
     private $gridX = false;
+	
+	/**
+	 * How to display gaps in the graph
+	 *
+	 * @var string
+	 */
+	private $display_blank_as = self::DISP_BLANK_AS_GAP;
 
     /**
      * Create a new instance
@@ -309,7 +349,7 @@ class Chart extends AbstractStyle
     }
 
     /**
-     * Set show Gridlines for Y-Axis
+     * Set labels for axis.
      *
      * @param bool $value
      * @return self
@@ -320,6 +360,29 @@ class Chart extends AbstractStyle
 
         return $this;
     }
+	
+	/**
+	 * Show titles for axis
+	 *
+	 * @return bool
+	 */
+	public function showAxisTitles()
+	{
+		return $this->showAxisTitles;
+	}
+	
+	/**
+	 * Set titles for axis
+	 *
+	 * @param bool $value
+	 * @return self
+	 */
+	public function setShowAxisTitles($value = true)
+	{
+		$this->showAxisTitles = $this->setBoolVal($value, $this->showAxisTitles);
+		
+		return $this;
+	}
 
     /**
      * get the list of options for data labels
@@ -502,4 +565,97 @@ class Chart extends AbstractStyle
 
         return $this;
     }
+	
+	/**
+	 * Get display blanks as
+	 *
+	 * @return string
+	 */
+	public function getDisplayBlanksAs()
+	{
+		return $this->display_blank_as;
+	}
+	
+	/**
+	 * Set display blanks as
+	 *
+	 * @param string $value
+	 * @return self
+	 */
+	public function setDisplayBlanksAs($value = null)
+	{
+		$enum = array(self::DISP_BLANK_AS_ZERO, self::DISP_BLANK_AS_GAP);
+		$this->display_blank_as = $this->setEnumVal($value, $enum, $this->display_blank_as);
+		
+		return $this;
+	}
+	
+	/**
+	 * Show legend
+	 *
+	 * @return bool
+	 */
+	public function showLegend()
+	{
+		return $this->showLegend;
+	}
+	
+	/**
+	 * Show title
+	 *
+	 * @return bool
+	 */
+	public function showTitle()
+	{
+		return $this->showTitle;
+	}
+	
+	/**
+	 * Set title
+	 *
+	 * @param bool $value
+	 * @return self
+	 */
+	public function setShowTitle($value = true)
+	{
+		$this->showTitle = $this->setBoolVal($value, $this->showTitle);
+		
+		return $this;
+	}
+	
+	/**
+	 * Get legend position
+	 *
+	 * @return string
+	 */
+	public function getLegendPos()
+	{
+		return $this->legendPos;
+	}
+	
+	/**
+	 * Set legend position
+	 *
+	 * @param string $value
+	 * @return self
+	 */
+	public function setLegendPos($value)
+	{
+		$enum = array(self::LEGEND_POS_RIGHT, self::LEGEND_POS_BOTTOM, self::LEGEND_POS_LEFT, self::LEGEND_POS_TOP);
+		$this->showLegend = $this->setEnumVal($value, $enum, $this->showLegend);
+		
+		return $this;
+	}
+	
+	public function setLegendOverlay($value){
+		return $this->legendOverlay = $this->setBoolVal($value, $this->legendOverlay);
+	}
+	
+	public function getLegendOverlay(){
+		return $this->legendOverlay;
+	}
+	
+	public function getLegendOverlayforXML(){
+		return ($this->legendOverlay ? '1' : '0');
+	}
 }
