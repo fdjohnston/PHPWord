@@ -227,6 +227,10 @@ class Chart extends AbstractPart
 
             $xmlWriter->writeElementBlock('c:idx', 'val', $index);
             $xmlWriter->writeElementBlock('c:order', 'val', $index);
+	
+			$xmlWriter->startElement('c:marker');
+			$xmlWriter->writeElementBlock('c:symbol', 'val', 'none');
+			$xmlWriter->endElement(); // c:marker
 
             if (!is_null($seriesItem['name']) && $seriesItem['name'] != '') {
                 $xmlWriter->startElement('c:tx');

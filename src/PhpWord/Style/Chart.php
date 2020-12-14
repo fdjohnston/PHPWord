@@ -24,6 +24,16 @@ namespace PhpOffice\PhpWord\Style;
  */
 class Chart extends AbstractStyle
 {
+	const MARKER_SYMBL_SQUARE 	= 'square';
+	const MARKER_SYMBL_DIAMOND 	= 'diamond';
+	const MARKER_SYMBL_TRIANGLE = 'triangle';
+	const MARKER_SYMBL_X 		= 'x';
+	const MARKER_SYMBL_STAR 	= 'star';
+	const MARKER_SYMBL_DOT 		= 'dot';
+	const MARKER_SYMBL_DASH 	= 'dash';
+	const MARKER_SYMBL_CIRCLE 	= 'circle';
+	const MARKER_SYMBL_PLUS 	= 'plus';
+	
     /**
      * Width (in EMU)
      *
@@ -285,7 +295,7 @@ class Chart extends AbstractStyle
         return $this;
     }
 
-    /*
+    /**
      * Show labels for axis
      *
      * @return bool
@@ -333,7 +343,7 @@ class Chart extends AbstractStyle
         }
     }
 
-    /*
+    /**
      * Show Gridlines for Y-Axis
      *
      * @return bool
