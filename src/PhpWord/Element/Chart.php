@@ -69,7 +69,7 @@ class Chart extends AbstractElement
      * @param array $style
      * @param null|mixed $seriesName
      */
-    public function __construct($type, $categories, $values, $style = null, $seriesName = null)
+    public function __construct($type, $style = null, $seriesName = null)
     {
         $this->setType($type);
         //$this->addSeries($categories, $values, $seriesName);
