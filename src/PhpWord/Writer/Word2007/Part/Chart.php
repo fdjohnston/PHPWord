@@ -279,6 +279,15 @@ class Chart extends AbstractPart
             $xmlWriter->writeElementBlock('c:idx', 'val', $index);
             $xmlWriter->writeElementBlock('c:order', 'val', $index);
 	
+			//Handle line style
+			if ($seriesStyle->getLineDashType()){
+				$xmlWriter->startElement('c:spPr');
+				$xmlWriter->startElement('a:ln');
+				$xmlWriter->writeElementBlock('a:prstDash', 'val', $seriesStyle->getLineDashType());
+				$xmlWriter->endElement(); // a:ln
+				$xmlWriter->endElement(); // c:spPr
+			}
+	
 			//Only output markers if this is marked type
 			if (in_array($type, $this->markedTypes)) {
 				$xmlWriter->startElement('c:marker');
