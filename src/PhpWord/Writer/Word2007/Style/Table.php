@@ -83,7 +83,7 @@ class Table extends AbstractStyle
 		//}
         $this->writeTblWidth($xmlWriter, 'w:tblW', $style->getUnit(), $style->getWidth());
         $this->writeTblWidth($xmlWriter, 'w:tblCellSpacing', TblWidth::TWIP, $style->getCellSpacing());
-        $this->writeIndent($xmlWriter, $style);
+        $this->writeIndent($xmlWriter, $style->getIndent(), $style::WIDTH_TWIP);
         $this->writeLayout($xmlWriter, $style->getLayout());
 
         // Position
@@ -225,7 +225,7 @@ class Table extends AbstractStyle
         $this->width = $value;
     }
 	
-	private function writeIndent(\PhpOffice\PhpWord\Shared\XMLWriter $xmlWriter, $indent, $unit) {
+	private function writeIndent(XMLWriter $xmlWriter, $indent, $unit) {
 		$xmlWriter->startElement('w:tblInd');
 		$xmlWriter->writeAttribute('w:w', $indent);
 		$xmlWriter->writeAttribute('w:type', $unit);
