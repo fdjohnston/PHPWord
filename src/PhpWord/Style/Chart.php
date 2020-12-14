@@ -34,6 +34,9 @@ class Chart extends AbstractStyle
 	const MARKER_SYMBL_CIRCLE 	= 'circle';
 	const MARKER_SYMBL_PLUS 	= 'plus';
 	
+	const DISP_BLANK_AS_ZERO	= 'zero';
+	const DISP_BLANK_AS_GAP		= 'gap';
+	
     /**
      * Width (in EMU)
      *
