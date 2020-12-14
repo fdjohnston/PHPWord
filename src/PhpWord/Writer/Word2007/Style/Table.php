@@ -77,12 +77,12 @@ class Table extends AbstractStyle
             $xmlWriter->endElement();
         }
 	
-		$this->writeIndent($xmlWriter, $style->getIndent(), $style::WIDTH_TWIP);
-		if ($style->getWidth() !== 0) {
-			$this->writeWidth($xmlWriter, $style->getWidth(), $style->getUnit());
-		}
-        //$this->writeTblWidth($xmlWriter, 'w:tblW', $style->getUnit(), $style->getWidth());
-        //$this->writeTblWidth($xmlWriter, 'w:tblCellSpacing', TblWidth::TWIP, $style->getCellSpacing());
+		//$this->writeIndent($xmlWriter, $style->getIndent(), $style::WIDTH_TWIP);
+		//if ($style->getWidth() !== 0) {
+		//	$this->writeWidth($xmlWriter, $style->getWidth(), $style->getUnit());
+		//}
+        $this->writeTblWidth($xmlWriter, 'w:tblW', $style->getUnit(), $style->getWidth());
+        $this->writeTblWidth($xmlWriter, 'w:tblCellSpacing', TblWidth::TWIP, $style->getCellSpacing());
         $this->writeIndent($xmlWriter, $style);
         $this->writeLayout($xmlWriter, $style->getLayout());
 
