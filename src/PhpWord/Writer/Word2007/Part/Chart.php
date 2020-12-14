@@ -106,6 +106,8 @@ class Chart extends AbstractPart
         $xmlWriter->startElement('c:chart');
 
         $this->writePlotArea($xmlWriter);
+	
+		$xmlWriter->writeElementBlock('c:dispBlanksAs', 'val', 'gap');
 
         $xmlWriter->endElement(); // c:chart
     }
@@ -318,17 +320,20 @@ class Chart extends AbstractPart
 
         $index = 0;
         foreach ($values as $value) {
-            $xmlWriter->startElement('c:pt');
-            $xmlWriter->writeAttribute('idx', $index);
-            if (\PhpOffice\PhpWord\Settings::isOutputEscapingEnabled()) {
-                $xmlWriter->writeElement('c:v', $value);
-            } else {
-                $xmlWriter->startElement('c:v');
-                $xmlWriter->writeRaw($value);
-                $xmlWriter->endElement(); // c:v
-            }
-            $xmlWriter->endElement(); // c:pt
-            $index++;
+        	if($value !== '') {
+				$xmlWriter->startElement('c:pt');
+				$xmlWriter->writeAttribute('idx', $index);
+				if (\PhpOffice\PhpWord\Settings::isOutputEscapingEnabled()) {
+					$xmlWriter->writeElement('c:v', $value);
+				}
+				else {
+					$xmlWriter->startElement('c:v');
+					$xmlWriter->writeRaw($value);
+					$xmlWriter->endElement(); // c:v
+				}
+				$xmlWriter->endElement(); // c:pt
+				$index++;
+			}
         }
 
         $xmlWriter->endElement(); // $itemLit
