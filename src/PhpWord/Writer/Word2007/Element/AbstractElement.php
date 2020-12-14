@@ -102,6 +102,11 @@ abstract class AbstractElement
             if (method_exists($this->element, 'getParagraphStyle')) {
                 $this->writeParagraphStyle();
             }
+	
+			// Paragraph style
+			if (method_exists($this->element, 'getFontStyle')) {
+				$this->writeFontStyle();
+			}
         }
         $this->writeCommentRangeStart();
     }

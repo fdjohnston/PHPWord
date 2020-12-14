@@ -38,27 +38,30 @@ class Text extends AbstractElement
         }
 
         $this->startElementP();
-
-        $this->writeOpeningTrackChange();
-
-        $xmlWriter->startElement('w:r');
-
-        $this->writeFontStyle();
-
-        $textElement = 'w:t';
-        //'w:delText' in case of deleted text
-        $changed = $element->getTrackChange();
-        if ($changed != null && $changed->getChangeType() == TrackChange::DELETED) {
-            $textElement = 'w:delText';
-        }
-        $xmlWriter->startElement($textElement);
-
-        $xmlWriter->writeAttribute('xml:space', 'preserve');
-        $this->writeText($this->getText($element->getText()));
-        $xmlWriter->endElement();
-        $xmlWriter->endElement(); // w:r
-
-        $this->writeClosingTrackChange();
+	
+		//Check if the text is empty
+		if (trim($element->getText()) != '') {
+			$this->writeOpeningTrackChange();
+			
+			$xmlWriter->startElement('w:r');
+			
+			$this->writeFontStyle();
+			
+			$textElement = 'w:t';
+			//'w:delText' in case of deleted text
+			$changed = $element->getTrackChange();
+			if ($changed != null && $changed->getChangeType() == TrackChange::DELETED) {
+				$textElement = 'w:delText';
+			}
+			$xmlWriter->startElement($textElement);
+			
+			$xmlWriter->writeAttribute('xml:space', 'preserve');
+			$this->writeText($this->getText($element->getText()));
+			$xmlWriter->endElement();
+			$xmlWriter->endElement(); // w:r
+			
+			$this->writeClosingTrackChange();
+		}
 
         $this->endElementP(); // w:p
     }

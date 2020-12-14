@@ -50,6 +50,13 @@ class TrendLine extends AbstractStyle
 	private $dispEq = false;
 	
 	/**
+	 * Font color
+	 *
+	 * @var string
+	 */
+	private $color;
+	
+	/**
 	 * Create a new instance
 	 *
 	 * @param array $style
@@ -125,6 +132,28 @@ class TrendLine extends AbstractStyle
 	public function setDisplayEq($value = true)
 	{
 		$this->dispEq = $this->setBoolVal($value, $this->dispEq);
+		
+		return $this;
+	}
+	
+	/**
+	 * Get font color
+	 *
+	 * @return string
+	 */
+	public function getColor() {
+		return $this->color;
+	}
+	
+	/**
+	 * Set font color
+	 *
+	 * @param string $value
+	 *
+	 * @return self
+	 */
+	public function setColor($value = null) {
+		$this->color = $value;
 		
 		return $this;
 	}

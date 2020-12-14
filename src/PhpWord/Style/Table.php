@@ -161,7 +161,7 @@ class Table extends Border
     private $position;
 
     /** @var TblWidthComplexType|null */
-    private $indent;
+    private $indent = 0;
 
     /**
      * The width of each column, computed based on the max cell width of each column
@@ -607,6 +607,28 @@ class Table extends Border
     {
         return $this->setAlignment($value);
     }
+	
+	/**
+	 * Get indent
+	 *
+	 * @return int|float
+	 */
+	public function getIndent() {
+		return $this->indent;
+	}
+	
+	/**
+	 * Set indent
+	 *
+	 * @param int|float $value
+	 *
+	 * @return self
+	 */
+	public function setIndent($value = null) {
+		$this->indent = $this->setNumericVal($value, $this->indent);
+		
+		return $this;
+	}
 
     /**
      * Get width

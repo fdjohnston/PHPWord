@@ -48,11 +48,11 @@ class Table extends AbstractStyle
             $xmlWriter->startElement('w:tblPr');
             $xmlWriter->startElement('w:tblStyle');
             $xmlWriter->writeAttribute('w:val', $style);
-            $xmlWriter->endElement();
+            $xmlWriter->endElement(); // w:tblStyle
             if (null !== $this->width) {
                 $this->writeTblWidth($xmlWriter, 'w:tblW', TblWidth::PERCENT, $this->width);
             }
-            $xmlWriter->endElement();
+            $xmlWriter->endElement(); // w:tblPr
         }
     }
 
@@ -76,9 +76,13 @@ class Table extends AbstractStyle
             }
             $xmlWriter->endElement();
         }
-
-        $this->writeTblWidth($xmlWriter, 'w:tblW', $style->getUnit(), $style->getWidth());
-        $this->writeTblWidth($xmlWriter, 'w:tblCellSpacing', TblWidth::TWIP, $style->getCellSpacing());
+	
+		$this->writeIndent($xmlWriter, $style->getIndent(), $style::WIDTH_TWIP);
+		if ($style->getWidth() !== 0) {
+			$this->writeWidth($xmlWriter, $style->getWidth(), $style->getUnit());
+		}
+        //$this->writeTblWidth($xmlWriter, 'w:tblW', $style->getUnit(), $style->getWidth());
+        //$this->writeTblWidth($xmlWriter, 'w:tblCellSpacing', TblWidth::TWIP, $style->getCellSpacing());
         $this->writeIndent($xmlWriter, $style);
         $this->writeLayout($xmlWriter, $style->getLayout());
 
@@ -220,19 +224,11 @@ class Table extends AbstractStyle
     {
         $this->width = $value;
     }
-
-    /**
-     * @param XMLWriter $xmlWriter
-     * @param TableStyle $style
-     */
-    private function writeIndent(XMLWriter $xmlWriter, TableStyle $style)
-    {
-        $indent = $style->getIndent();
-
-        if ($indent === null) {
-            return;
-        }
-
-        $this->writeTblWidth($xmlWriter, 'w:tblInd', $indent->getType(), $indent->getValue());
-    }
+	
+	private function writeIndent(\PhpOffice\PhpWord\Shared\XMLWriter $xmlWriter, $indent, $unit) {
+		$xmlWriter->startElement('w:tblInd');
+		$xmlWriter->writeAttribute('w:w', $indent);
+		$xmlWriter->writeAttribute('w:type', $unit);
+		$xmlWriter->endElement(); // w:tblInd
+	}
 }

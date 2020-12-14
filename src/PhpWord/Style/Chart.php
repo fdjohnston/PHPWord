@@ -195,6 +195,12 @@ class Chart extends AbstractStyle
 	 * @var string
 	 */
 	private $display_blank_as = self::DISP_BLANK_AS_GAP;
+	
+	private $borderSize;
+	
+	private $borderColor;
+	
+	private $roundedCorners = true;
 
     /**
      * Create a new instance
@@ -205,6 +211,60 @@ class Chart extends AbstractStyle
     {
         $this->setStyleByArray($style);
     }
+	
+	/**
+	 * Get rounded corners
+	 *
+	 * @return int
+	 */
+	public function getRoundedCorners() {
+		return $this->roundedCorners;
+	}
+	
+	/**
+	 * Set rounded corners
+	 *
+	 * @return int
+	 */
+	public function setRoundedCorners($value = true) {
+		return $this->roundedCorners = $this->setBoolVal($value, $this->roundedCorners);
+	}
+	
+	/**
+	 * Get border color
+	 *
+	 * @return int
+	 */
+	public function getBorderColor() {
+		return $this->borderColor;
+	}
+	
+	/**
+	 * Get border size
+	 *
+	 * @return int
+	 */
+	public function getBorderSize() {
+		return $this->borderSize;
+	}
+	
+	/**
+	 * Set border color
+	 *
+	 * @return int
+	 */
+	public function setBorderColor($value) {
+		return $this->borderColor = $this->setIntVal($value, $this->borderColor);
+	}
+	
+	/**
+	 * Set border size
+	 *
+	 * @return int
+	 */
+	public function setBorderSize($value) {
+		return $this->borderSize = $this->setIntVal($value, $this->borderSize);
+	}
 
     /**
      * Get width

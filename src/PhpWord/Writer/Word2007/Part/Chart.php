@@ -90,6 +90,10 @@ class Chart extends AbstractPart
         $xmlWriter->writeAttribute('xmlns:c', 'http://schemas.openxmlformats.org/drawingml/2006/chart');
         $xmlWriter->writeAttribute('xmlns:a', 'http://schemas.openxmlformats.org/drawingml/2006/main');
         $xmlWriter->writeAttribute('xmlns:r', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships');
+	
+		$style = $this->element->getStyle();
+	
+		$xmlWriter->writeElementBlock('c:roundedCorners', 'val', $style->getRoundedCorners() == true ? 1 : 0);
 
         $this->writeChart($xmlWriter);
         $this->writeShape($xmlWriter);
@@ -298,6 +302,16 @@ class Chart extends AbstractPart
 			//Output trendline
 			if ($trendLine !== null){
 				$xmlWriter->startElement('c:trendline');
+				$trendLineColor = $trendLine->getColor();
+				if ($trendLineColor != null){
+					$xmlWriter->startElement('c:spPr');
+					$xmlWriter->startElement('a:ln');
+					$xmlWriter->startElement('a:solidFill');
+					$xmlWriter->writeElementBlock('a:srgbClr', 'val', $trendLineColor);
+					$xmlWriter->endElement(); // a:solidFill
+					$xmlWriter->endElement(); // a:ln
+					$xmlWriter->endElement(); // c:spPr
+				}
 				$xmlWriter->writeElementBlock('c:trendlineType', 'val', $trendLine->getType());
 				$xmlWriter->writeElementBlock('c:dispRSqr', 'val', $trendLine->displayRSqr() ? '1' : '0');
 				$xmlWriter->writeElementBlock('c:dispEq', 'val', $trendLine->displayEq() ? '1' : '0');
@@ -536,12 +550,15 @@ class Chart extends AbstractPart
      * @param \PhpOffice\Common\XMLWriter $xmlWriter
      * @param bool $line
      */
-    private function writeShape(XMLWriter $xmlWriter, $line = false)
+    private function writeShape(XMLWriter $xmlWriter)
     {
+		$style = $this->element->getStyle();
         $xmlWriter->startElement('c:spPr');
         $xmlWriter->startElement('a:ln');
-        if ($line === true) {
-            $xmlWriter->writeElement('a:solidFill');
+        if ($style->getBorderSize() > 0) {
+			$xmlWriter->startElement('a:solidFill');
+			$xmlWriter->writeElementBlock('a:srgbClr', 'val', $style->getBorderColor());
+			$xmlWriter->endElement(); //a:solidFill
         } else {
             $xmlWriter->writeElement('a:noFill');
         }
