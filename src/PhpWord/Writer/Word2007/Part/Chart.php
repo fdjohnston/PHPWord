@@ -373,7 +373,7 @@ class Chart extends AbstractPart
 
         $index = 0;
         foreach ($values as $value) {
-        	if($value !== '') {
+        	//if($value !== '') {
 				$xmlWriter->startElement('c:pt');
 				$xmlWriter->writeAttribute('idx', $index);
 				if (\PhpOffice\PhpWord\Settings::isOutputEscapingEnabled()) {
@@ -386,7 +386,7 @@ class Chart extends AbstractPart
 				}
 				$xmlWriter->endElement(); // c:pt
 				$index++;
-			}
+			//}
         }
 
         $xmlWriter->endElement(); // $itemLit
