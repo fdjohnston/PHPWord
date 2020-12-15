@@ -270,6 +270,7 @@ class Chart extends AbstractPart
         
         $index = 0;
         foreach ($series as $seriesItem) {
+        	/*
 			//Fetch series styles
 			$seriesStyle = $seriesItem->getStyle();
 			$trendLine = $seriesItem->getTrendLine();
@@ -277,14 +278,17 @@ class Chart extends AbstractPart
 			//Fetch categories and values
 			$categories = $seriesItem->getCategories();
 			$values = $seriesItem->getValues();
-
+*/
+			$categories = $seriesItem['categories'];
+			$values = $seriesItem['values'];
+			
             $xmlWriter->startElement('c:ser');
 
             $xmlWriter->writeElementBlock('c:idx', 'val', $index);
             $xmlWriter->writeElementBlock('c:order', 'val', $index);
 	
 			//Handle line style
-			if ($seriesStyle->getLineDashType()){
+			/*if ($seriesStyle->getLineDashType()){
 				$xmlWriter->startElement('c:spPr');
 				$xmlWriter->startElement('a:ln');
 				$xmlWriter->writeElementBlock('a:prstDash', 'val', $seriesStyle->getLineDashType());
@@ -316,9 +320,9 @@ class Chart extends AbstractPart
 				$xmlWriter->writeElementBlock('c:dispRSqr', 'val', $trendLine->displayRSqr() ? '1' : '0');
 				$xmlWriter->writeElementBlock('c:dispEq', 'val', $trendLine->displayEq() ? '1' : '0');
 				$xmlWriter->endElement(); // c:trendline
-			}
+			}*/
 
-            if (isset($seriesItem->name) && !is_null($seriesItem->name) && $seriesItem->name != '') {
+            if (isset($seriesItem['name']) && !is_null($seriesItem['name']) && $seriesItem['name'] != '') {
                 $xmlWriter->startElement('c:tx');
                 $xmlWriter->startElement('c:strRef');
                 $xmlWriter->startElement('c:strCache');
@@ -326,7 +330,7 @@ class Chart extends AbstractPart
                 $xmlWriter->startElement('c:pt');
                 $xmlWriter->writeAttribute('idx', 0);
                 $xmlWriter->startElement('c:v');
-                $xmlWriter->writeRaw($seriesItem->name);
+                $xmlWriter->writeRaw($seriesItem['name']);
                 $xmlWriter->endElement(); // c:v
                 $xmlWriter->endElement(); // c:pt
                 $xmlWriter->endElement(); // c:strCache

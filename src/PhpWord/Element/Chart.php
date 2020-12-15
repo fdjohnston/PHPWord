@@ -45,7 +45,7 @@ class Chart extends AbstractElement
     /**
      * Series
      *
-     * @var \PhpOffice\PhpWord\Element\Series[]
+     * @var array
      */
     private $series = array();
 
@@ -69,10 +69,10 @@ class Chart extends AbstractElement
      * @param array $style
      * @param null|mixed $seriesName
      */
-    public function __construct($type, $style = null, $seriesName = null)
+    public function __construct($type, $categories, $values, $style = null, $seriesName = null)
     {
         $this->setType($type);
-        //$this->addSeries($categories, $values, $seriesName);
+        $this->addSeries($categories, $values, $seriesName);
         $this->style = $this->setNewStyle(new ChartStyle(), $style, true);
     }
 
@@ -104,9 +104,9 @@ class Chart extends AbstractElement
      * @param array $values
      * @param null|mixed $name
      */
-    public function addSeries($categories, $values, $trendLine = null, $style = null)
+    public function addSeries($categories, $values, $name = null)
     {
-		$this->series[] = new Series($categories, $values, $trendLine, $style);
+		$this->series[] = array('categories' => $categories, 'values' => $values, 'name' => $name); // new Series($categories, $values, $trendLine, $style);
     }
 
     /**
