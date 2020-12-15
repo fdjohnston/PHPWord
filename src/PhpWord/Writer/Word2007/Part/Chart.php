@@ -114,35 +114,6 @@ class Chart extends AbstractPart
 		$style = $this->element->getStyle();
     	
         $xmlWriter->startElement('c:chart');
-	
-		if ($style->showTitle()) {
-			$xmlWriter->startElement('c:title');
-			$xmlWriter->startElement('c:tx');
-			$xmlWriter->startElement('c:rich');
-		
-			$xmlWriter->writeElement('a:bodyPr');
-			$xmlWriter->writeElement('a:lstStyle');
-		
-			$xmlWriter->startElement('a:p');
-			$xmlWriter->startElement('a:pPr');
-			$xmlWriter->writeElement('a:defRPr');
-			$xmlWriter->endElement(); // a:pPr
-		
-			$xmlWriter->startElement('a:r');
-			$xmlWriter->writeElement('a:t', $this->element->getTitle());
-			$xmlWriter->endElement(); // a:r
-		
-		
-			$xmlWriter->endElement(); // a:p
-		
-			$xmlWriter->endElement(); // c:rich
-			$xmlWriter->endElement(); // c:tx
-			$xmlWriter->writeElementBlock('c:overlay', 'val', "0");
-			$xmlWriter->endElement(); // c:title
-		}
-		else {
-			$xmlWriter->writeElementBlock('c:autoTitleDeleted', 'val', 1);
-		}
 
         $this->writePlotArea($xmlWriter);
 	

@@ -90,8 +90,8 @@ class Chart extends AbstractStyle
      * @var array
      */
     private $dataLabelOptions = array(
-        'showVal'          => true, // value
-        'showCatName'      => true, // category name
+        'showVal'          => false, // value
+        'showCatName'      => false, // category name
         'showLegendKey'    => false, //show the cart legend
         'showSerName'      => false, // series name
         'showPercent'      => false,
